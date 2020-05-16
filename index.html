@@ -176,6 +176,8 @@
                     var cell_delete = row.insertCell(-1);
                     //セルに内容を書き込む
                     //todo:表から直接要素訂正の機能→ここでidを指定すればできる？
+                    //メモ:deleteLyricを参考に直接行番号を取れば良いと思う→どちらにしてもidの指定は必要
+                    //メモ:idの指定-<p id="..">-</p>でできる
                     cell_time.innerHTML = lyric_array[i][0];
                     cell_lyric.innerHTML = lyric_array[i][1];
                     cell_delete.innerHTML = '<input type="button" value="削除" id="deleteButton" onclick=deleteLyric(this)>'
