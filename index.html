@@ -69,6 +69,7 @@
             //todo: script部分を別ファイルに分けてすっきりさせたい
             //todo: cssをもうちょっと綺麗にしたい
             var isPlaying = false;//再生状態
+            var isEditing = false;//行が編集中かどうか
 
             var file;
             var reader = new FileReader();
@@ -146,7 +147,7 @@
             function deleteLyric(obj){
                 //削除ボタンの押された行を取得
                 var line = obj.parentNode.parentNode;
-                var index = line.sectionRowIndex - 1
+                var index = line.sectionRowIndex - 1;
 
                 //歌詞データの当該行をnullにする
                 lyric_array[index][0] = null;
@@ -157,6 +158,37 @@
 
                 //新しい配列に基づいて表を更新する
                 updateTable();
+            }
+
+            //表の特定の行にテキストボックスを作る
+            function editLyric(obj){
+                //他の行を編集中の時は新たに編集状態にしない
+                if(isEditing !== true){
+                    //クリックされた行を取得
+                    var line = obj.parentNode.parentNode;
+                    var index = line.sectionRowIndex;
+                    
+                    isEditing = true;
+
+                    var table = document.getElementById('lyricTable');
+                    table.rows[index].cells[1].innerHTML = '<input type="text" value="'+lyric_array[index - 1][1]+'" id="table_textBox">';
+                    //enterキーで確定する
+                    //memo:複数行でテキストボックスが出てるとエラーになるかも？
+                    //todo:→編集中のフラグを入れて複数は出ないようにする
+                    document.getElementById('table_textBox').addEventListener('keypress', {line_index: index, handleEvent: lyric_keyPress});
+                }        
+            }
+
+            //歌詞の変更を確定する
+            function lyric_keyPress(e){
+                //enterキーのとき
+                if(e.keyCode === 13){
+                    //歌詞データを変更
+                    lyric_array[this.line_index - 1][1] = document.getElementById('table_textBox').value
+                    //表を再描画
+                    updateTable();
+                    isEditing = false;
+                }
             }
 
             //表の書き換え
@@ -179,7 +211,7 @@
                     //メモ:deleteLyricを参考に直接行番号を取れば良いと思う→どちらにしてもidの指定は必要
                     //メモ:idの指定-<p id="..">-</p>でできる
                     cell_time.innerHTML = lyric_array[i][0];
-                    cell_lyric.innerHTML = lyric_array[i][1];
+                    cell_lyric.innerHTML = '<p onclick=editLyric(this)>' + lyric_array[i][1] + '</p>';
                     cell_delete.innerHTML = '<input type="button" value="削除" id="deleteButton" onclick=deleteLyric(this)>'
                 }
             }
