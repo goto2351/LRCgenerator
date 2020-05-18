@@ -45,7 +45,7 @@
         <br>
         <input type="file" id="targetFile" size=50 oninput=loadMusic()><br>
 
-        <input type="button" id="playButton" value="▶" onclick=playButton_click()> 
+        <input type="button" id="playButton" value="▶" onclick=playButton_click() disabled=true> 
         <input type="range" id="timebar" value="0" min="0" max="100" step="0.01" oninput=setTime()><br>
 
         Time:
@@ -91,6 +91,7 @@
                     music.src = reader.result;
                 }
                 reader.readAsDataURL(file);
+                document.getElementById('playButton').disabled = false;
             }
 
             //再生/一時停止ボタンの処理を再生状態によって切り替える
