@@ -66,8 +66,6 @@
         </table>
 
         <script>
-            //todo: script部分を別ファイルに分けてすっきりさせたい
-            //todo: cssをもうちょっと綺麗にしたい
             var isPlaying = false;//再生状態
             var isEditing = false;//行が編集中かどうか
 
@@ -198,7 +196,7 @@
                 //見出し以外全ての行を削除する
                 while(table.rows.length > 1) table.deleteRow(1);
 
-                //配列に沿って行を追加していく
+                //配列に従って行を追加していく
                 for(var i = 0; i < lyric_array.length; i++){
                     //末尾に行を追加
                     var row = table.insertRow(-1);
